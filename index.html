@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Recomendador de Artistas para tu Spotify</h1>
+      <button id="login-btn">Iniciar sesión con Spotify</button>
+      <div id="user-info" style="display:none;"></div>
+      <div id="input-section" style="display:none;">
+        <h2>Pega tu listado de artistas (uno por línea):</h2>
+        <textarea id="artist-list" rows="8" cols="40" placeholder="Ejemplo:\nRosalía\nC. Tangana\nBad Bunny"></textarea>
+        <br>
+        <button id="analyze-btn">Analizar</button>
+      </div>
+      <div id="results-section" style="display:none;">
+        <h2>Artistas que más te pueden gustar:</h2>
+        <ul id="results-list"></ul>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
