@@ -6,20 +6,29 @@ window.addEventListener('DOMContentLoaded', () => {
   const REDIRECT_URI = 'https://festiby.vercel.app/'; // Redirección a la app en Vercel
   const SCOPES = 'user-top-read';
 
-  function getAuthUrl() {
-    const params = new URLSearchParams({
-      client_id: CLIENT_ID,
-      response_type: 'token',
-      redirect_uri: REDIRECT_URI,
-      scope: SCOPES,
-    });
-    return `https://accounts.spotify.com/authorize?${params.toString()}`;
+  // --- PKCE UTILS ---
+  function base64urlencode(a) {
+    return btoa(String.fromCharCode.apply(null, new Uint8Array(a)))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
   }
 
-  function getTokenFromUrl() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    return params.get('access_token');
+  async function sha256(plain) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(plain);
+    return await window.crypto.subtle.digest('SHA-256', data);
+  }
+
+  async function generateCodeChallenge(codeVerifier) {
+    const hashed = await sha256(codeVerifier);
+    return base64urlencode(hashed);
+  }
+
+  function generateRandomString(length) {
+    const array = new Uint32Array(length);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('').substr(0, length);
   }
 
   // --- MANEJO DE UI ---
@@ -30,18 +39,71 @@ window.addEventListener('DOMContentLoaded', () => {
   const resultsSection = document.getElementById('results-section');
   const resultsList = document.getElementById('results-list');
 
-  let accessToken = getTokenFromUrl();
+  // --- FLUJO PKCE ---
+  let accessToken = localStorage.getItem('spotify_access_token');
 
-  if (accessToken) {
+  async function handleAuth() {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (code) {
+      // Intercambiar code por token
+      const codeVerifier = localStorage.getItem('spotify_code_verifier');
+      const body = new URLSearchParams({
+        client_id: CLIENT_ID,
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: REDIRECT_URI,
+        code_verifier: codeVerifier,
+      });
+      const res = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      });
+      const data = await res.json();
+      if (data.access_token) {
+        accessToken = data.access_token;
+        localStorage.setItem('spotify_access_token', accessToken);
+        window.history.replaceState({}, document.title, '/'); // Limpia el code de la URL
+        showLoggedUI();
+      } else {
+        alert('Error autenticando con Spotify');
+      }
+    } else if (accessToken) {
+      showLoggedUI();
+    } else {
+      showLoginUI();
+    }
+  }
+
+  function showLoginUI() {
+    loginBtn.style.display = 'block';
+    userInfo.style.display = 'none';
+    inputSection.style.display = 'none';
+    resultsSection.style.display = 'none';
+  }
+
+  function showLoggedUI() {
     loginBtn.style.display = 'none';
     userInfo.style.display = 'block';
     inputSection.style.display = 'block';
     showUserInfo();
-  } else {
-    loginBtn.onclick = () => {
-      window.location = getAuthUrl();
-    };
   }
+
+  loginBtn.onclick = async () => {
+    const codeVerifier = generateRandomString(64);
+    const codeChallenge = await generateCodeChallenge(codeVerifier);
+    localStorage.setItem('spotify_code_verifier', codeVerifier);
+    const params = new URLSearchParams({
+      response_type: 'code',
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      redirect_uri: REDIRECT_URI,
+      code_challenge_method: 'S256',
+      code_challenge: codeChallenge,
+    });
+    window.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
+  };
 
   // --- OBTENER INFO DE USUARIO Y TOP ARTISTAS ---
   async function showUserInfo() {
@@ -116,6 +178,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const res = await fetchSpotify(url);
     return res.artists.items[0];
   }
+
+  // --- INICIO ---
+  handleAuth();
 });
 
 
