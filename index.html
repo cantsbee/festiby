@@ -1,27 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>FestiBy - Recomendador de Artistas para Spotify</title>
+    <meta name="description" content="Descubre qué artistas de tu lista te pueden gustar más según tu Spotify. ¡Ideal para festivales y descubrir música nueva!" />
   </head>
   <body>
-    <div id="app">
-      <h1>Recomendador de Artistas para tu Spotify</h1>
-      <button id="login-btn">Iniciar sesión con Spotify</button>
-      <div id="user-info" style="display:none;"></div>
-      <div id="input-section" style="display:none;">
-        <h2>Pega tu listado de artistas (uno por línea):</h2>
-        <textarea id="artist-list" rows="8" cols="40" placeholder="Ejemplo:\nRosalía\nC. Tangana\nBad Bunny"></textarea>
-        <br>
-        <button id="analyze-btn">Analizar</button>
-      </div>
-      <div id="results-section" style="display:none;">
-        <h2>Artistas que más te pueden gustar:</h2>
-        <ul id="results-list"></ul>
-      </div>
-    </div>
+    <header style="width:100vw; background: linear-gradient(90deg, #232526 0%, #7ee787 100%); box-shadow: 0 2px 12px #0003; padding: 2.5rem 0 1.5rem 0; margin-bottom: 2rem; text-align: center;">
+      <img src="/vite.svg" alt="Logo FestiBy" style="width: 64px; height: 64px; margin-bottom: 1rem; filter: drop-shadow(0 2px 8px #23252688);">
+      <h1 style="margin: 0; font-size: 2.5em; color: #232526; letter-spacing: 0.01em;">FestiBy</h1>
+      <p style="max-width: 480px; margin: 1.2em auto 0 auto; color: #232526; font-size: 1.2em; font-weight: 500;">
+        Descubre <b>qué artistas</b> de tu lista te pueden gustar más según tu Spotify.<br>
+        ¡Ideal para preparar festivales, compartir con amigos y descubrir música nueva!
+      </p>
+    </header>
+    <main>
+      <div id="app"></div>
+    </main>
+    <footer style="margin-top: 3em; text-align: center; color: #7ee787; font-size: 1em; opacity: 0.8;">
+      Hecho con ❤️ para fans de la música · <a href="https://github.com/" style="color:#646cff;">Ver código</a>
+    </footer>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
