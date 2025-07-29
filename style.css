@@ -1,0 +1,133 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background: none;
+}
+
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 2rem 2rem;
+  text-align: center;
+  background: rgba(30, 30, 40, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.1;
+  margin-bottom: 1.2em;
+  letter-spacing: 0.01em;
+  color: #7ee787;
+  text-shadow: 0 2px 8px #0006;
+}
+
+section, .section, #input-section, #results-section {
+  background: rgba(44, 62, 80, 0.85);
+  border-radius: 16px;
+  margin: 1.5em 0;
+  padding: 1.5em 1em;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+}
+
+textarea {
+  width: 90%;
+  min-width: 220px;
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid #646cff;
+  padding: 0.8em;
+  font-size: 1em;
+  background: #232526;
+  color: #fff;
+  margin-bottom: 1em;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+textarea:focus {
+  border-color: #7ee787;
+  outline: none;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid #7ee787;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  font-weight: 600;
+  font-family: inherit;
+  background: linear-gradient(90deg, #232526 0%, #7ee787 100%);
+  color: #232526;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 #0002;
+  margin: 0.5em 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+button:hover {
+  background: linear-gradient(90deg, #7ee787 0%, #232526 100%);
+  color: #fff;
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 3px auto #7ee787;
+}
+
+ul#results-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul#results-list li {
+  background: rgba(255,255,255,0.07);
+  margin: 0.5em 0;
+  padding: 1em 0.7em;
+  border-radius: 10px;
+  color: #fff;
+  box-shadow: 0 1px 4px 0 #0002;
+  font-size: 1.05em;
+  transition: background 0.2s;
+}
+ul#results-list li a {
+  color: #7ee787;
+  font-weight: bold;
+  text-decoration: none;
+}
+ul#results-list li a:hover {
+  text-decoration: underline;
+  color: #646cff;
+}
+
+#user-info p {
+  color: #fff;
+  font-size: 1.1em;
+  margin: 0.5em 0 1em 0;
+}
+
+@media (max-width: 600px) {
+  #app {
+    max-width: 98vw;
+    padding: 1.2rem 0.2rem;
+  }
+  textarea {
+    width: 98%;
+  }
+}
